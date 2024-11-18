@@ -41,10 +41,11 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="Введите свой токен"
+        android:textColorHint="@color/white"
         android:importantForAutofill="no"
         android:inputType="text"
+        android:textColor="@color/white"
         android:layout_marginStart="16dp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,6 +58,7 @@
         android:layout_marginTop="28dp"
         android:text="Bellerage GITHUB"
         android:textSize="18sp"
+        android:textColor="@color/white"
         android:fontFamily="@font/fontawesome5brandsregular400"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -70,6 +72,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text="Token"
+        android:textColor="@color/white"
         android:fontFamily="@font/fontawesome5brandsregular400"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />

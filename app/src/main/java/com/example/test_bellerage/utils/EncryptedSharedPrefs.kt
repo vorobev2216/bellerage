@@ -25,15 +25,15 @@ class SecureTokenManager(private val context: Context){
         )
     }
 
-    fun storeToken(token: String) {
+    fun storeToken(token: Int) {
         with(sharedPrefs.edit()) {
-            putString("token", token)
+            putInt("token", token)
             apply()
         }
     }
 
-    fun retrieveToken(): String? {
-        return sharedPrefs.getString("token",null)
+    fun retrieveToken(): Int {
+        return sharedPrefs.getInt("token",0)
     }
 
     fun deleteToken() {

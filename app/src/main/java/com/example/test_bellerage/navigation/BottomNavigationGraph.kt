@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.test_bellerage.screens.MainScreen
 import com.example.test_bellerage.screens.ProfileScreen
-import com.example.test_bellerage.screens.RegistrationScreen
+import com.example.test_bellerage.screens.WebViewScreen
+import com.example.test_bellerage.screens.registration.viewmodel.RegistrationViewModel
 import com.example.test_bellerage.screens.users.UsersScreen
 
 
@@ -18,14 +18,21 @@ fun BottomNavGraph(navController: NavHostController) {
     ) {
 
         composable(route = BottomBarScreen.Home.route) {
-            UsersScreen()
+            UsersScreen(navController)
         }
         composable(route = BottomBarScreen.Profile.route) {
-            ProfileScreen()
+
+                ProfileScreen()
+
         }
         composable(route = BottomBarScreen.Settings.route) {
-            ProfileScreen()
+            WebViewScreen()
+        }
+        composable(route = "user_details") {
+
         }
 
     }
 }
+
+

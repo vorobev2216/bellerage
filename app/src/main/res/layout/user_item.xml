@@ -47,6 +47,7 @@
             tools:text="20 followers" />
 
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
