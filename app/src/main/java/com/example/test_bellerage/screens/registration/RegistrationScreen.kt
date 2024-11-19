@@ -32,8 +32,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 fun RegistrationScreen() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
     val tokenManager = remember { SecureTokenManager(context) }
+
     val retrofit = Retrofit.Builder()
         .baseUrl("https://api.github.com/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -60,21 +60,28 @@ fun RegistrationScreen() {
                     } else {
 
                         scope.launch {
-                            try {
-                                val user: UserLogInDTO = apiService.getUser(tokenEditText.text.toString().toInt())
+                            withContext(Dispatchers.IO){
+                                try {
+                                    val user: UserLogInDTO =
+                                        apiService.getUser(tokenEditText.text.toString().toInt())
 
                                     val intent = Intent(context, SignInActivity::class.java).apply {
                                         putExtra("login", user.login)
                                         putExtra("followers", user.followers)
                                         putExtra("repositories", user.public_repos)
-                                        putExtra("image",user.avatar_url)
+                                        putExtra("image", user.avatar_url)
                                     }
                                     context.startActivity(intent)
-                                tokenManager.storeToken(userId.toInt())
+                                    tokenManager.storeToken(userId.toInt())
 
-                            } catch (e: Exception) {
-                                    Toast.makeText(context, "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
+                                } catch (e: Exception) {
+                                    Toast.makeText(
+                                        context,
+                                        "Ошибка: ${e.message}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
+                                }
                             }
                         }
                     }

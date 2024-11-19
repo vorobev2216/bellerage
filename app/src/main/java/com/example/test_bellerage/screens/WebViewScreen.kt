@@ -20,7 +20,6 @@ fun WebViewScreen() {
 
                 addJavascriptInterface(MyJavaScriptInterface(context), "jsInterface")
 
-
                 loadDataWithBaseURL(
                     null,
                     """

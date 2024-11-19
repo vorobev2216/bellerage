@@ -8,7 +8,6 @@ import androidx.navigation.compose.*
 import com.example.test_bellerage.navigation.BottomBar
 
 import com.example.test_bellerage.navigation.BottomNavGraph
-import com.example.test_bellerage.screens.registration.viewmodel.RegistrationViewModel
 
 @Composable
 fun MainScreen() {

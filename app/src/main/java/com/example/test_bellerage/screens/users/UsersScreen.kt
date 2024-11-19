@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,7 +37,7 @@ fun UsersScreen(navController: NavHostController) {
     var users = remember { mutableListOf<User>() }
     var visibleUsers = remember { mutableStateOf<List<User>>(emptyList()) }
     var since = remember {
-        mutableStateOf(1)
+        mutableIntStateOf(1)
     }
 
 
@@ -51,10 +52,9 @@ fun UsersScreen(navController: NavHostController) {
         coroutineScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val call = service.getUsers(since.value,40)
+                    val call = service.getUsers(since.intValue,40)
                     users.clear()
                     users.addAll(call)
-                    Log.e("RRR", "Error: ${users.toString()}")
                     visibleUsers.value = users.take(10)
                 } catch (e: Exception) {
                     Log.e("RRR", "Error: ${e.message}")
@@ -111,11 +111,3 @@ fun UsersScreen(navController: NavHostController) {
     }
 }
 
-
-@Composable
-fun UsertDetailsScreen(userId: User) {
-    // Здесь вы можете получить данные профиля по userId, например, из сети
-    // Или использовать это значение для вывода информации о пользователе
-
-    Text(text = "Profile Screen for user: $userId")
-}

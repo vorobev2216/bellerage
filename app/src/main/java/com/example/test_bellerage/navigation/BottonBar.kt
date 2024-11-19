@@ -1,6 +1,5 @@
 package com.example.test_bellerage.navigation
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -14,7 +13,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -22,7 +20,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.test_bellerage.utils.SecureTokenManager
 
 sealed class BottomBarScreen(
     val route: String,
@@ -35,7 +32,7 @@ sealed class BottomBarScreen(
         icon = Icons.Default.Home
     )
 
-    object Settings : BottomBarScreen(
+    object WebView : BottomBarScreen(
         route = "settings",
         title = "Settings",
         icon = Icons.Default.Settings
@@ -53,7 +50,7 @@ sealed class BottomBarScreen(
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
         BottomBarScreen.Home,
-        BottomBarScreen.Settings,
+        BottomBarScreen.WebView,
         BottomBarScreen.Profile,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -79,10 +76,7 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
-    val context = LocalContext.current
-    var tokenManager = remember {
-        SecureTokenManager(context)
-    }
+
     IconButton(
         onClick = {
             navController.navigate(screen.route) {
