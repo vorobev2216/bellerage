@@ -2,10 +2,10 @@ package com.example.test_bellerage.screens
 
 import android.app.Activity
 import android.content.Intent
-import android.hardware.camera2.params.ColorSpaceTransform
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,24 +15,29 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.example.test_bellerage.MainActivity
 import com.example.test_bellerage.R
-import com.example.test_bellerage.screens.registration.viewmodel.RegistrationViewModel
 import com.example.test_bellerage.utils.SecureTokenManager
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -41,8 +46,36 @@ fun ProfileScreen() {
     val context = LocalContext.current as Activity
     var tokenManager = remember { SecureTokenManager(context) }
     val scrollState = rememberScrollState()
+    val followers = context.intent.getIntExtra("followers", 0)
+    val repo = context.intent.getIntExtra("repositories", 0)
+    val login = context.intent.getStringExtra("login")
+    val image = context.intent.getStringExtra("image")
+    var bitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
 
 
+    LaunchedEffect(image) {
+        image?.let { url ->
+            isLoading = true
+            Picasso.get()
+                .load(url)
+                .into(object : com.squareup.picasso.Target {
+                    override fun onBitmapLoaded(loadedBitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                        bitmap = loadedBitmap
+                        isLoading = false
+                    }
+
+                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                        e?.printStackTrace()
+                        isLoading = false
+                    }
+
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+                    }
+                })
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -51,23 +84,23 @@ fun ProfileScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.profile_image),
-            contentDescription = "Profile Logo",
-            modifier = Modifier
-                .padding(start = 10.dp, end = 10.dp)
-                .size(200.dp)
-        )
-        val login = context.intent.getStringExtra("login")
+        bitmap?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = "Profile Image",
+                modifier = Modifier
+                    .padding(start = 10.dp, end = 10.dp)
+                    .size(200.dp)
+            )
+        } ?: CircularProgressIndicator()
 
         Text(
             text = "${login}",
             fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400))
         )
-        val folowers = context.intent.getIntExtra("followers",0)
-        val repo = context.intent.getIntExtra("repositories",0)
+
         Text(
-            text = "$folowers followers",
+            text = "$followers followers",
             fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400))
         )
 
@@ -91,7 +124,9 @@ fun ProfileScreen() {
             )
         ) {
             Text(
-                text = "Log out", fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400)), color = Color.Red
+                text = "Log out",
+                fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400)),
+                color = Color.Red
             )
         }
 

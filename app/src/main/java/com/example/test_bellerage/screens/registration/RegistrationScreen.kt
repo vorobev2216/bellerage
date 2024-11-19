@@ -67,6 +67,7 @@ fun RegistrationScreen() {
                                         putExtra("login", user.login)
                                         putExtra("followers", user.followers)
                                         putExtra("repositories", user.public_repos)
+                                        putExtra("image",user.avatar_url)
                                     }
                                     context.startActivity(intent)
                                 tokenManager.storeToken(userId.toInt())
