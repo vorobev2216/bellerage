@@ -89,8 +89,6 @@ fun RowScope.AddItem(
                 popUpTo(navController.graph.findStartDestination().id)
                 launchSingleTop = true
             }
-            val tets = tokenManager.retrieveToken()
-            Toast.makeText(context,tets.toString(),Toast.LENGTH_SHORT).show()
         },
     ) {
         Icon(
