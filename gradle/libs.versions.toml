@@ -1,6 +1,7 @@
 [versions]
 agp = "8.5.0"
 converterGson = "2.9.0"
+coreSplashscreen = "1.0.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -11,6 +12,9 @@ activityCompose = "1.9.3"
 composeBom = "2024.11.00"
 constraintlayout = "2.2.0"
 composeNavigation = "2.8.4"
+lifecycleRuntimeKtxVersion = "2.8.7"
+lifecycleViewmodelKtx = "2.8.7"
+navigationCompose = "2.4.0-alpha10"
 picasso = "2.8"
 retrofit = "2.9.0"
 securityCrypto = "1.1.0-alpha06"
@@ -25,6 +29,10 @@ runtimeLivedata = "1.7.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-lifecycle-runtime-ktx-v287 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-navigation-compose-v240alpha10 = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
