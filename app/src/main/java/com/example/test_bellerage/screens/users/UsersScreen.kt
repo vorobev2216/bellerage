@@ -30,15 +30,17 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+// TODO бесконечного списка нет (с апи не разобрался)
+// TODO зачем since
+// TODO размышления про Launched Effect
+// TODO а где логика про список подписчиков?????????
 
 @Composable
 fun UsersScreen(navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()
     var users = remember { mutableListOf<User>() }
     var visibleUsers = remember { mutableStateOf<List<User>>(emptyList()) }
-    var since = remember {
-        mutableIntStateOf(1)
-    }
+    var since = remember { mutableIntStateOf(1) }
 
 
     val retrofit = Retrofit.Builder()

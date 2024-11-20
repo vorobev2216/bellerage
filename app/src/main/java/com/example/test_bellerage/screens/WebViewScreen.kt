@@ -1,6 +1,8 @@
 package com.example.test_bellerage.screens
 
+import android.annotation.SuppressLint
 import android.webkit.WebView
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,9 +10,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.test_bellerage.utils.MyJavaScriptInterface
 
+// TODO зачем апдейт????
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewScreen() {
-
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = { context ->
@@ -44,7 +47,7 @@ fun WebViewScreen() {
 
                         sendData = () => {
                           i++;
-                          jsInterface.sendValue(`Hello from WebView `);
+                          jsInterface.sendValue("Hello from WebView " + i);
                         }
                       </script>
                     </body>
@@ -55,8 +58,6 @@ fun WebViewScreen() {
                     null
                 )
             }
-        },
-        update = { webView ->
         }
     )
 }

@@ -1,7 +1,6 @@
 package com.example.test_bellerage.screens.registration
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -19,14 +18,16 @@ import com.example.test_bellerage.R
 import com.example.test_bellerage.SignInActivity
 import com.example.test_bellerage.network.GitHubApiService
 import com.example.test_bellerage.screens.registration.DTO.UserLogInDTO
-import com.example.test_bellerage.screens.registration.viewmodel.RegistrationViewModel
 import com.example.test_bellerage.utils.SecureTokenManager
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
+// TODO создание апи сервиса в конмпонуемой функции - очень плохо
+// TODO то же про Токен Менеджер
+// TODO вызов методов из IO потоков
 
 @Composable
 fun RegistrationScreen() {
@@ -35,7 +36,7 @@ fun RegistrationScreen() {
     val tokenManager = remember { SecureTokenManager(context) }
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.github.com/")
+        .baseUrl("https://api.github.com/") // TODO такие вещи вообще в сборщики выносятся
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     val apiService = retrofit.create(GitHubApiService::class.java)
@@ -55,7 +56,7 @@ fun RegistrationScreen() {
                 loginButton.setOnClickListener {
                     val userId = tokenEditText.text.toString()
 
-                    if (tokenEditText.text.toString() == "") {
+                    if (tokenEditText.text.toString() == "") { // TODO чуть больше валидации бы
                         Toast.makeText(context, "Упс! Введите ID пользователя", Toast.LENGTH_SHORT).show()
                     } else {
 

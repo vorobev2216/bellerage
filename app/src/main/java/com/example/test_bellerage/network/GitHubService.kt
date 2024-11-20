@@ -6,6 +6,17 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+// TODO пристану к форматированию
+/*
+    @GET("/users")
+    suspend fun getUsers(
+        @Query("since") since: Int,
+        @Query("per_page") perPage: Int = 30
+    ):  List<User>
+*/
+
+// TODO зачем разнес на разные интерфейсы?
+
 interface GitHubService {
     @GET("/users")
     suspend fun getUsers(@Query("since") since: Int, @Query("per_page") perPage: Int = 30):  List<User>

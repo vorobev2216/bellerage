@@ -1,5 +1,6 @@
 package com.example.test_bellerage.screens.registration.DTO
 
+// TODO в идеале, все Optional (никогда не знаешь, где бекендеры обосрутся)
 data class UserLogInDTO(
     val login: String,
     val id: Int,

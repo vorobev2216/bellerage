@@ -7,10 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test_bellerage.R
+import com.example.test_bellerage.databinding.UserItemBinding
 import com.example.test_bellerage.screens.users.DTO.User
 
+// TODO тут тоже binding можно было поиспользовать
+
 class UserAdapter(
-    private var users: MutableList<User>,
+    private var users: MutableList<User>, // TODO передаешь реализацию листа
     private val onUserClick: (User) -> Unit
 ) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
@@ -29,8 +32,8 @@ class UserAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = users[position]
         holder.loginTextView.text = user.login
-        holder.followersTextView.text = if(user.followersUrl == null) "0 followers" else  "followers"
-        holder.avatarImageView.setImageResource(R.drawable.profile_image)
+        holder.followersTextView.text = if (user.followersUrl == null) "0 followers" else  "followers"
+        holder.avatarImageView.setImageResource(R.drawable.profile_image) // TODO а как же аватарки???
 
         holder.itemView.setOnClickListener {
             onUserClick(user)

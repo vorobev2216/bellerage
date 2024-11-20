@@ -7,6 +7,8 @@ import android.preference.PreferenceDataStore
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
+// TODO используешь как хелпер (много тяжких операций)
+
 class SecureTokenManager(private val context: Context){
 
     private val masterKeyAlias = MasterKey.Builder(context)

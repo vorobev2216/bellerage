@@ -15,11 +15,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+
+// TODO Для всех иконок просил использовать иконочный стиль
+// TODO Не похоже на макет (не появляется title при выбранной навигации)
+// TODO Строки заносятся в строковые ресурсы для поддержки разных конфигураций
+// TODO Зачем sealed???
+// TODO расширение RowScope видно по всему проекту
+// TODO рекомпозиция кнопок происходит при каждом селекте
+// TODO создание функции редиректа в иконке (тут будут великие рассуждения про модульность приложения)
 
 sealed class BottomBarScreen(
     val route: String,
@@ -48,11 +55,13 @@ sealed class BottomBarScreen(
 
 @Composable
 fun BottomBar(navController: NavHostController) {
+
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.WebView,
         BottomBarScreen.Profile,
     )
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 

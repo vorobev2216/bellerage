@@ -14,11 +14,13 @@ import com.example.test_bellerage.screens.registration.viewmodel.RegistrationVie
 import com.example.test_bellerage.ui.theme.Test_bellerageTheme
 import com.example.test_bellerage.utils.SecureTokenManager
 
+// TODO тут вообще прикол с неймингами (RegScreen на Main, MainScreen на SignInAct)
+// TODO enableEdgeToEdge????
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        installSplashScreen()
+//        installSplashScreen()
         setContent {
             Test_bellerageTheme {
                 val context = LocalContext.current

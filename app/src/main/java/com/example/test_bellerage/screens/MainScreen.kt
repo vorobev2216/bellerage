@@ -9,13 +9,15 @@ import com.example.test_bellerage.navigation.BottomBar
 
 import com.example.test_bellerage.navigation.BottomNavGraph
 
+// TODO innerPadding зачем нужен?
+
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomBar(navController = navController) }
     ) { innerPaddig ->
-        BottomNavGraph(navController = navController,)
+        BottomNavGraph(navController = navController)
     }
 }
 

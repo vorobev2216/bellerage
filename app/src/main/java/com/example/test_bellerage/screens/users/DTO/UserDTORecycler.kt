@@ -1,5 +1,8 @@
 package com.example.test_bellerage.screens.users.DTO
 
+// TODO optional все
+// TODO сериализация не работает
+// TODO наименование файла = наименованию класса (если один класс внутри)
 data class User(
     val login: String,
     val id: Int,
@@ -8,7 +11,7 @@ data class User(
     val gravatarId: String,
     val url: String,
     val htmlUrl: String,
-    val followersUrl: String,
+    val followersUrl: String?,
     val followingUrl: String,
     val gistsUrl: String,
     val starredUrl: String,
