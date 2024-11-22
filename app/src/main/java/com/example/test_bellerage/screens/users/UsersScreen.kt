@@ -47,7 +47,7 @@ fun UsersScreen(navController: NavHostController) {
 
     val service = retrofit.create(GitHubService::class.java)
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(since) {
         coroutineScope.launch {
             withContext(Dispatchers.IO) {
                 try {
@@ -96,7 +96,7 @@ fun UsersScreen(navController: NavHostController) {
                     }
                     adapter = UserAdapter(visibleUsers.value.toMutableList()) { login ->
                         Log.d("RRR", login.toString())
-                        if(login.followersUrl == null){
+                        if(login.followers_url == null){
                             Toast.makeText(context,"Нет подписчиков", Toast.LENGTH_SHORT).show()
                         }
 

@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test_bellerage.R
 import com.example.test_bellerage.screens.users.DTO.UserDTORecycler
+import com.squareup.picasso.Picasso
 
 class UserAdapter(
     private var users: MutableList<UserDTORecycler>,
@@ -29,8 +30,12 @@ class UserAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = users[position]
         holder.loginTextView.text = user.login
-        holder.followersTextView.text = if(user.followersUrl == null) "0 followers" else  "followers"
-        holder.avatarImageView.setImageResource(R.drawable.profile_image)
+        holder.followersTextView.text = if(user.followers_url == null) "0 followers" else  "followers"
+        Picasso.get()
+            .load(user.avatar_url)
+            .placeholder(R.drawable.profile_image)
+            .error(R.drawable.profile_image)
+            .into(holder.avatarImageView)
 
         holder.itemView.setOnClickListener {
             onUserClick(user)
