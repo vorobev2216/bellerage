@@ -14,7 +14,8 @@ constraintlayout = "2.2.0"
 composeNavigation = "2.8.4"
 lifecycleRuntimeKtxVersion = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
-navigationCompose = "2.4.0-alpha10"
+materialVersion = "1.7.5"
+navigationCompose = "2.8.4"
 picasso = "2.8"
 retrofit = "2.9.0"
 securityCrypto = "1.1.0-alpha06"
@@ -32,6 +33,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-lifecycle-runtime-ktx-v287 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
 androidx-navigation-compose-v240alpha10 = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }

@@ -1,25 +1,25 @@
 package com.example.test_bellerage.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxWidth
+
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavDestination
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.test_bellerage.R
 
 sealed class BottomBarScreen(
     val route: String,
@@ -28,14 +28,14 @@ sealed class BottomBarScreen(
 ) {
     object Home : BottomBarScreen(
         route = "home",
-        title = "Home",
-        icon = Icons.Default.Home
+        title = "Users",
+        icon = Icons.Default.Menu
     )
 
     object WebView : BottomBarScreen(
         route = "settings",
-        title = "Settings",
-        icon = Icons.Default.Settings
+        title = "WebView",
+        icon = Icons.Default.Info
     )
 
     object Profile : BottomBarScreen(
@@ -53,41 +53,35 @@ fun BottomBar(navController: NavHostController) {
         BottomBarScreen.WebView,
         BottomBarScreen.Profile,
     )
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    BottomAppBar(modifier = Modifier.fillMaxWidth()) {
-        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
-            screens.forEach { screen ->
-                AddItem(
-                    screen = screen,
-                    currentDestination = currentDestination,
-                    navController = navController
-                )
-            }
+    NavigationBar {
+        screens.forEach { screen ->
+            val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+            BottomNavigationItem(
+                icon = {
+                    Icon(
+                        imageVector = screen.icon,
+                        contentDescription = screen.title,
+                        tint = if (selected) Color.White else Color.DarkGray
+                    )
+                },
+                label = { if (selected) Text(text = screen.title, fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400)))},
+                selected =selected,
+                onClick = {
+                    navController.navigate(screen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+            )
         }
     }
 }
 
 
-@Composable
-fun RowScope.AddItem(
-    screen: BottomBarScreen,
-    currentDestination: NavDestination?,
-    navController: NavHostController
-) {
-
-    IconButton(
-        onClick = {
-            navController.navigate(screen.route) {
-                popUpTo(navController.graph.findStartDestination().id)
-                launchSingleTop = true
-            }
-        },
-    ) {
-        Icon(
-            imageVector = screen.icon,
-            contentDescription = "Navigation Icon"
-        )
-    }
-}

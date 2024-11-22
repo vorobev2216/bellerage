@@ -1,13 +1,14 @@
 package com.example.test_bellerage.screens
 
+import android.annotation.SuppressLint
 import android.webkit.WebView
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.test_bellerage.utils.MyJavaScriptInterface
 
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewScreen() {
 
@@ -55,8 +56,6 @@ fun WebViewScreen() {
                     null
                 )
             }
-        },
-        update = { webView ->
         }
     )
 }

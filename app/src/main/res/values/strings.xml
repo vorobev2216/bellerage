@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">test_bellerage</string>
+    <string name="login">Login</string>
+    <string name="input_token">Введите свой токен</string>
 </resources>

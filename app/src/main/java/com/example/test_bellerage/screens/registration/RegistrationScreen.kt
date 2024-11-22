@@ -1,7 +1,6 @@
 package com.example.test_bellerage.screens.registration
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -16,12 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.test_bellerage.R
-import com.example.test_bellerage.SignInActivity
+import com.example.test_bellerage.MainActivity
 import com.example.test_bellerage.network.GitHubApiService
 import com.example.test_bellerage.screens.registration.DTO.UserLogInDTO
-import com.example.test_bellerage.screens.registration.viewmodel.RegistrationViewModel
 import com.example.test_bellerage.utils.SecureTokenManager
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,7 +26,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(modifier: Modifier) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val tokenManager = remember { SecureTokenManager(context) }
@@ -42,7 +39,7 @@ fun RegistrationScreen() {
 
     Scaffold { p ->
         AndroidView(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(p),
             factory = { context ->
@@ -65,7 +62,7 @@ fun RegistrationScreen() {
                                     val user: UserLogInDTO =
                                         apiService.getUser(tokenEditText.text.toString().toInt())
 
-                                    val intent = Intent(context, SignInActivity::class.java).apply {
+                                    val intent = Intent(context, MainActivity::class.java).apply {
                                         putExtra("login", user.login)
                                         putExtra("followers", user.followers)
                                         putExtra("repositories", user.public_repos)

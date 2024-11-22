@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
@@ -22,7 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test_bellerage.network.GitHubService
-import com.example.test_bellerage.screens.users.DTO.User
+import com.example.test_bellerage.screens.users.DTO.UserDTORecycler
 import com.example.test_bellerage.screens.users.adapter.UserAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,8 +33,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Composable
 fun UsersScreen(navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()
-    var users = remember { mutableListOf<User>() }
-    var visibleUsers = remember { mutableStateOf<List<User>>(emptyList()) }
+    var users = remember { mutableListOf<UserDTORecycler>() }
+    var visibleUsers = remember { mutableStateOf<List<UserDTORecycler>>(emptyList()) }
     var since = remember {
         mutableIntStateOf(1)
     }

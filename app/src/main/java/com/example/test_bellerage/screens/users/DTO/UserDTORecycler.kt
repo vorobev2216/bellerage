@@ -1,6 +1,6 @@
 package com.example.test_bellerage.screens.users.DTO
 
-data class User(
+data class UserDTORecycler(
     val login: String,
     val id: Int,
     val nodeId: String,

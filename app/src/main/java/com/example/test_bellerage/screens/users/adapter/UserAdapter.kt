@@ -7,11 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test_bellerage.R
-import com.example.test_bellerage.screens.users.DTO.User
+import com.example.test_bellerage.screens.users.DTO.UserDTORecycler
 
 class UserAdapter(
-    private var users: MutableList<User>,
-    private val onUserClick: (User) -> Unit
+    private var users: MutableList<UserDTORecycler>,
+    private val onUserClick: (UserDTORecycler) -> Unit
 ) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -39,7 +39,7 @@ class UserAdapter(
 
     override fun getItemCount() = users.size
 
-    fun updateUsers(newUsers: List<User>) {
+    fun updateUsers(newUsers: List<UserDTORecycler>) {
         users.addAll(newUsers)
         notifyDataSetChanged()
     }
