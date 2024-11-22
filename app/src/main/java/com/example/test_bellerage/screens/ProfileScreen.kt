@@ -91,7 +91,7 @@ fun ProfileScreen() {
         } ?: CircularProgressIndicator()
 
         Text(
-            text = "${login}",
+            text = "$login",
             fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400))
         )
 
@@ -101,7 +101,7 @@ fun ProfileScreen() {
         )
 
         Text(
-            text = "${repo} repositories",
+            text = "$repo repositories",
             fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400))
         )
         Button(
