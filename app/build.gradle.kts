@@ -43,7 +43,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.12"
     }
     packaging {
         resources {
@@ -91,6 +91,11 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.fontawesomecompose)
 
-    implementation(libs.dagger)
-    kapt(libs.dagger.compiler)
+    implementation(libs.dagger.v2461)
+    kapt(libs.dagger.compiler.v2461)
+
+    implementation(libs.dagger.android)
+    implementation(libs.dagger.android.support)
+    kapt(libs.dagger.android.processor)
+
 }

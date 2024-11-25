@@ -1,10 +1,12 @@
 [versions]
-agp = "8.5.0"
+agp = "8.5.2"
 converterGson = "2.9.0"
 coreSplashscreen = "1.0.1"
-dagger = "2.46.1"
+dagger = "2.36"
+daggerCompiler = "2.46.1"
+daggerVersion = "2.46.1"
 fontawesomecompose = "1.0.0"
-kotlin = "1.9.0"
+kotlin = "1.9.23"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -40,7 +42,12 @@ androidx-navigation-compose-v240alpha10 = { module = "androidx.navigation:naviga
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-android = { module = "com.google.dagger:dagger-android", version.ref = "daggerVersion" }
+dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "daggerVersion" }
+dagger-android-support = { module = "com.google.dagger:dagger-android-support", version.ref = "daggerVersion" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+dagger-compiler-v2461 = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerCompiler" }
+dagger-v2461 = { module = "com.google.dagger:dagger", version.ref = "daggerVersion" }
 fontawesomecompose = { module = "com.github.Gurupreet:FontAwesomeCompose", version.ref = "fontawesomecompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

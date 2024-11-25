@@ -16,11 +16,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.test_bellerage.R
 import com.example.test_bellerage.MainActivity
 import com.example.test_bellerage.network.GitHubService
 import com.example.test_bellerage.screens.registration.DTO.UserLogInDTO
 import com.example.test_bellerage.utils.SecureTokenManager
+import com.example.test_bellerage.viewmodel.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
 fun RegistrationScreen(modifier: Modifier) {
+    val viewModel: MainViewModel = viewModel()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val tokenManager = remember { SecureTokenManager(context) }
