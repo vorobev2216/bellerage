@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.*
 import com.example.test_bellerage.navigation.BottomBar
 import com.example.test_bellerage.navigation.BottomBarScreen
-
 import com.example.test_bellerage.navigation.BottomNavGraph
 
 @Composable

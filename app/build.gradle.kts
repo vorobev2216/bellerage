@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -89,4 +90,7 @@ dependencies {
     implementation(libs.picasso)
     implementation(libs.androidx.material)
     implementation(libs.fontawesomecompose)
+
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 }
