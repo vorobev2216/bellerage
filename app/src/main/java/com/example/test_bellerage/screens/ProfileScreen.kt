@@ -47,27 +47,22 @@ fun ProfileScreen() {
     val login = context.intent.getStringExtra("login")
     val image = context.intent.getStringExtra("image")
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
-    var isLoading by remember { mutableStateOf(true) }
 
 
     LaunchedEffect(image) {
         image?.let { url ->
-            isLoading = true
             Picasso.get()
                 .load(url)
                 .into(object : com.squareup.picasso.Target {
                     override fun onBitmapLoaded(loadedBitmap: Bitmap?, from: Picasso.LoadedFrom?) {
                         bitmap = loadedBitmap
-                        isLoading = false
                     }
 
                     override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
                         e?.printStackTrace()
-                        isLoading = false
                     }
 
                     override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-
                     }
                 })
         }

@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.test_bellerage.screens.ProfileScreen
 import com.example.test_bellerage.screens.WebViewScreen
+import com.example.test_bellerage.screens.users.UserProfileScreen
 import com.example.test_bellerage.screens.users.UsersScreen
 
 
@@ -26,6 +27,9 @@ fun BottomNavGraph(navController: NavHostController, modifier: Modifier) {
         }
         composable(route = BottomBarScreen.WebView.route) {
             WebViewScreen()
+        }
+        composable(route = "details") {
+            UserProfileScreen()
         }
 
     }

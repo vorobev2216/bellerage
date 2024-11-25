@@ -2,12 +2,14 @@ package com.example.test_bellerage.screens.users
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.layout.Row
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
@@ -21,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.test_bellerage.network.GitHubService
+import com.example.test_bellerage.screens.ProfileScreen
 import com.example.test_bellerage.screens.users.DTO.UserDTORecycler
 import com.example.test_bellerage.screens.users.adapter.UserAdapter
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +54,7 @@ fun UsersScreen(navController: NavHostController) {
         coroutineScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val call = service.getUsers(since.intValue,40)
+                    val call = service.getUsers(since.intValue, 40)
                     users.clear()
                     users.addAll(call)
                     visibleUsers.value = users.take(10)
@@ -83,7 +86,8 @@ fun UsersScreen(navController: NavHostController) {
                         addOnScrollListener(object : RecyclerView.OnScrollListener() {
                             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                                 super.onScrolled(recyclerView, dx, dy)
-                                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                                val layoutManager =
+                                    recyclerView.layoutManager as LinearLayoutManager
                                 val totalItemCount = layoutManager.itemCount
                                 val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
 
@@ -94,13 +98,15 @@ fun UsersScreen(navController: NavHostController) {
                             }
                         })
                     }
-                    adapter = UserAdapter(visibleUsers.value.toMutableList()) { login ->
-                        Log.d("RRR", login.toString())
-                        if(login.followers_url == null){
-                            Toast.makeText(context,"Нет подписчиков", Toast.LENGTH_SHORT).show()
-                        }
-
-                    }
+                    adapter = UserAdapter(visibleUsers.value.toMutableList(), navController = navController)
+//                    { user ->
+//                        if (user.followers_url == null) {
+//                            Toast.makeText(context, "Нет подписчиков", Toast.LENGTH_SHORT).show()
+//                        }
+//                        composeView.setContent {
+//                            UserProfileScreen()
+//                        }
+//                    }
                 }
             },
             update = { recyclerView ->
@@ -110,3 +116,14 @@ fun UsersScreen(navController: NavHostController) {
     }
 }
 
+@Composable
+fun UserProfileScreen() {
+
+
+    Scaffold  { i ->
+        Text(text = "okwpkqkdpoqkd", modifier = Modifier.padding(i))
+    }
+
+
+
+}

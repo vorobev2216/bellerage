@@ -1,6 +1,7 @@
 package com.example.test_bellerage.screens.registration
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -16,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.test_bellerage.R
 import com.example.test_bellerage.MainActivity
-import com.example.test_bellerage.network.GitHubApiService
+import com.example.test_bellerage.network.GitHubService
 import com.example.test_bellerage.screens.registration.DTO.UserLogInDTO
 import com.example.test_bellerage.utils.SecureTokenManager
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +37,8 @@ fun RegistrationScreen(modifier: Modifier) {
         .baseUrl("https://api.github.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    val apiService = retrofit.create(GitHubApiService::class.java)
+    val apiService = retrofit.create(GitHubService::class.java)
+    var user = remember { mutableStateOf<UserLogInDTO?>(null) }
 
     Scaffold { p ->
         AndroidView(
@@ -53,34 +56,34 @@ fun RegistrationScreen(modifier: Modifier) {
                     val userId = tokenEditText.text.toString()
 
                     if (tokenEditText.text.toString() == "") {
-                        Toast.makeText(context, "Упс! Введите ID пользователя", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Упс! Введите ID пользователя", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
 
                         scope.launch {
-                            withContext(Dispatchers.IO){
+                            withContext(Dispatchers.IO) {
                                 try {
-                                    val user: UserLogInDTO =
+                                     user.value =
                                         apiService.getUser(tokenEditText.text.toString().toInt())
 
-                                    val intent = Intent(context, MainActivity::class.java).apply {
-                                        putExtra("login", user.login)
-                                        putExtra("followers", user.followers)
-                                        putExtra("repositories", user.public_repos)
-                                        putExtra("image", user.avatar_url)
-                                    }
-                                    context.startActivity(intent)
-                                    tokenManager.storeToken(userId.toInt())
-
                                 } catch (e: Exception) {
-                                    Toast.makeText(
-                                        context,
-                                        "Ошибка: ${e.message}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    Log.d(
+                                        "RRR",
+                                        "Ошибка: ${e.message}"
+                                    )
+
 
                                 }
                             }
                         }
+                        val intent = Intent(context, MainActivity::class.java).apply {
+//                            putExtra("login", user.value!!.login)
+//                            putExtra("followers", user.value!!.followers)
+//                            putExtra("repositories", user.value!!.public_repos)
+//                            putExtra("image", user.value!!.avatar_url)
+                        }
+                        context.startActivity(intent)
+                        tokenManager.storeToken(userId.toInt())
                     }
                 }
             }

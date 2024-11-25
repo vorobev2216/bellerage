@@ -13,9 +13,14 @@ interface GitHubService {
         @Query("per_page") perPage: Int = 30
     ): List<UserDTORecycler>
 
+    @GET("users/{username}/followers")
+    suspend fun getFollowers(
+        @Path("username") username: String
+    ): List<UserDTORecycler>
+
+    @GET("user/{id}")
+    suspend fun getUser(
+        @Path("id") id: Int
+    ): UserLogInDTO
 }
 
-interface GitHubApiService {
-    @GET("user/{id}")
-    suspend fun getUser(@Path("id") id: Int): UserLogInDTO
-}

@@ -88,4 +88,5 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.picasso)
     implementation(libs.androidx.material)
+    implementation(libs.fontawesomecompose)
 }
