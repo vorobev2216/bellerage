@@ -2,12 +2,15 @@ package com.example.test_bellerage.screens.users
 
 
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,7 +36,6 @@ import kotlinx.coroutines.launch
 fun UsersScreen(navController: NavHostController) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val users = remember { mutableListOf<UserDTORecycler>() }
     val visibleUsers = remember { mutableStateOf<List<UserDTORecycler>>(emptyList()) }
     val since = remember {
         mutableIntStateOf(1)
@@ -44,29 +46,14 @@ fun UsersScreen(navController: NavHostController) {
             context.appComponent.mainViewModelFactory()
         )[MainViewModel::class.java]
     }
-    LaunchedEffect(Unit) {
+    val users by viewModel.users.observeAsState(emptyList())
+    LaunchedEffect(since) {
         coroutineScope.launch {
             viewModel.getUsers(since.intValue, 40)
         }
     }
 
-    viewModel.users?.let { users.addAll(it) }
     visibleUsers.value = users.take(10)
-
-//    LaunchedEffect(since) {
-//        coroutineScope.launch {
-//            withContext(Dispatchers.IO) {
-//                try {
-//                    val call = gitHubService.getUsers(since.intValue, 40)
-//                    users.clear()
-//                    users.addAll(call)
-//                    visibleUsers.value = users.take(10)
-//                } catch (e: Exception) {
-//                    Log.e("RRR", "Error: ${e.message}")
-//                }
-//            }
-//        }
-//    }
 
     val onLoadMore = rememberUpdatedState {
         if (visibleUsers.value.size < users.size) {
@@ -102,17 +89,13 @@ fun UsersScreen(navController: NavHostController) {
                         })
                     }
                     adapter = UserAdapter(
-                        visibleUsers.value.toMutableList(),
+                        users = visibleUsers.value.toMutableList(),
+                        onUserClick = { user ->
+                            Log.d("RRR", "User clicked: ${user.login}")
+                        },
+                        viewModel = viewModel,
                         navController = navController
                     )
-//                    { user ->
-//                        if (user.followers_url == null) {
-//                            Toast.makeText(context, "Нет подписчиков", Toast.LENGTH_SHORT).show()
-//                        }
-//                        composeView.setContent {
-//                            UserProfileScreen()
-//                        }
-//                    }
                 }
             },
             update = { recyclerView ->

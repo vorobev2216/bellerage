@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserLogInDTO(
-    val login: String? = null,
+    var login: String? = null,
     val id: Int? = null,
-    val avatar_url: String? = null ,
-    val url: String? = null ,
+    val avatar_url: String? = null,
+    val url: String? = null,
     val name: String? = null,
     val company: String? = null,
     val blog: String? = null,
