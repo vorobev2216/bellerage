@@ -2,6 +2,8 @@ package com.example.test_bellerage.screens
 
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,6 +13,7 @@ import com.example.test_bellerage.navigation.BottomBar
 import com.example.test_bellerage.navigation.BottomBarScreen
 import com.example.test_bellerage.navigation.BottomNavGraph
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -23,10 +26,17 @@ fun MainScreen() {
     )
     Scaffold(
         bottomBar = {
-            if (currentRoute != "details") {
-                BottomBar(navController = navController, screens)
-            }
+            BottomBar(navController = navController, screens)
         },
+        topBar = {
+            if (currentRoute == "details") {
+                TopAppBar(title = { Text(text = "Details") }, navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, "back")
+                    }
+                })
+            }
+        }
     ) { innerPadding ->
         BottomNavGraph(navController = navController, modifier = Modifier.padding(innerPadding))
     }

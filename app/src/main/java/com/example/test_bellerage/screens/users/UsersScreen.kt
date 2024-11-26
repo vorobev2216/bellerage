@@ -116,15 +116,3 @@ fun UsersScreen(navController: NavHostController) {
         )
     }
 }
-
-@Composable
-fun UserProfileScreen() {
-
-
-    Scaffold  { i ->
-        Text(text = "okwpkqkdpoqkd", modifier = Modifier.padding(i))
-    }
-
-
-
-}

@@ -31,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
 fun RegistrationScreen(modifier: Modifier) {
-    val viewModel: MainViewModel = viewModel()
+
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val tokenManager = remember { SecureTokenManager(context) }
@@ -68,6 +68,14 @@ fun RegistrationScreen(modifier: Modifier) {
                                 try {
                                      user.value =
                                         apiService.getUser(tokenEditText.text.toString().toInt())
+                                    val intent = Intent(context, MainActivity::class.java).apply {
+                                        putExtra("login", user.value!!.login)
+                                        putExtra("followers", user.value!!.followers)
+                                        putExtra("repositories", user.value!!.public_repos)
+                                        putExtra("image", user.value!!.avatar_url)
+                                    }
+                                    context.startActivity(intent)
+                                    tokenManager.storeToken(userId.toInt())
 
                                 } catch (e: Exception) {
                                     Log.d(
@@ -79,14 +87,7 @@ fun RegistrationScreen(modifier: Modifier) {
                                 }
                             }
                         }
-                        val intent = Intent(context, MainActivity::class.java).apply {
-//                            putExtra("login", user.value!!.login)
-//                            putExtra("followers", user.value!!.followers)
-//                            putExtra("repositories", user.value!!.public_repos)
-//                            putExtra("image", user.value!!.avatar_url)
-                        }
-                        context.startActivity(intent)
-                        tokenManager.storeToken(userId.toInt())
+
                     }
                 }
             }
