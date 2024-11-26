@@ -45,7 +45,7 @@ fun WebViewScreen() {
 
                         sendData = () => {
                           i++;
-                          jsInterface.sendValue(`Hello from WebView `);
+                          jsInterface.sendValue("Hello from WebView " + i);
                         }
                       </script>
                     </body>
