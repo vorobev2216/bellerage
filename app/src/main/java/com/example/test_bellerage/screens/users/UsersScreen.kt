@@ -1,15 +1,11 @@
 package com.example.test_bellerage.screens.users
 
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.layout.Row
+
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
@@ -18,53 +14,59 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavHostController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.test_bellerage.network.GitHubService
-import com.example.test_bellerage.screens.ProfileScreen
+import com.example.test_bellerage.appComponent
 import com.example.test_bellerage.screens.users.DTO.UserDTORecycler
 import com.example.test_bellerage.screens.users.adapter.UserAdapter
-import kotlinx.coroutines.Dispatchers
+import com.example.test_bellerage.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 
 @Composable
 fun UsersScreen(navController: NavHostController) {
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    var users = remember { mutableListOf<UserDTORecycler>() }
-    var visibleUsers = remember { mutableStateOf<List<UserDTORecycler>>(emptyList()) }
-    var since = remember {
+    val users = remember { mutableListOf<UserDTORecycler>() }
+    val visibleUsers = remember { mutableStateOf<List<UserDTORecycler>>(emptyList()) }
+    val since = remember {
         mutableIntStateOf(1)
     }
-
-
-
-    val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.github.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    val service = retrofit.create(GitHubService::class.java)
-
-    LaunchedEffect(since) {
+    val viewModel = remember {
+        ViewModelProvider(
+            context as ViewModelStoreOwner,
+            context.appComponent.mainViewModelFactory()
+        )[MainViewModel::class.java]
+    }
+    LaunchedEffect(Unit) {
         coroutineScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    val call = service.getUsers(since.intValue, 40)
-                    users.clear()
-                    users.addAll(call)
-                    visibleUsers.value = users.take(10)
-                } catch (e: Exception) {
-                    Log.e("RRR", "Error: ${e.message}")
-                }
-            }
+            viewModel.getUsers(since.intValue, 40)
         }
     }
+
+    viewModel.users?.let { users.addAll(it) }
+    visibleUsers.value = users.take(10)
+
+//    LaunchedEffect(since) {
+//        coroutineScope.launch {
+//            withContext(Dispatchers.IO) {
+//                try {
+//                    val call = gitHubService.getUsers(since.intValue, 40)
+//                    users.clear()
+//                    users.addAll(call)
+//                    visibleUsers.value = users.take(10)
+//                } catch (e: Exception) {
+//                    Log.e("RRR", "Error: ${e.message}")
+//                }
+//            }
+//        }
+//    }
 
     val onLoadMore = rememberUpdatedState {
         if (visibleUsers.value.size < users.size) {
@@ -99,7 +101,10 @@ fun UsersScreen(navController: NavHostController) {
                             }
                         })
                     }
-                    adapter = UserAdapter(visibleUsers.value.toMutableList(), navController = navController)
+                    adapter = UserAdapter(
+                        visibleUsers.value.toMutableList(),
+                        navController = navController
+                    )
 //                    { user ->
 //                        if (user.followers_url == null) {
 //                            Toast.makeText(context, "Нет подписчиков", Toast.LENGTH_SHORT).show()

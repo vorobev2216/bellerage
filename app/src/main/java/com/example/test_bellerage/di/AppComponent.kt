@@ -1,15 +1,14 @@
 package com.example.test_bellerage.di
 
-import com.example.test_bellerage.MainActivity
-import com.example.test_bellerage.viewmodel.MainViewModel
+import com.example.test_bellerage.network.GitHubService
 import dagger.Component
 import dagger.Module
 
 
 @Component(modules = [AppModule::class])
 interface AppComponent {
-    fun inject(activity: MainActivity)
-    fun viewModel(): MainViewModel
+    fun mainViewModelFactory(): MainViewModelFactory
+    fun gitHubService(): GitHubService
 }
 
 @Module(includes = [NetworkModule::class, ViewModelModule::class])

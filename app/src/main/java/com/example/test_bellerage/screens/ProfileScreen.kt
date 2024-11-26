@@ -30,9 +30,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import com.example.test_bellerage.SignInActivity
 import com.example.test_bellerage.R
+import com.example.test_bellerage.appComponent
 import com.example.test_bellerage.utils.SecureTokenManager
+import com.example.test_bellerage.viewmodel.MainViewModel
 import com.squareup.picasso.Picasso
 
 
@@ -40,6 +44,12 @@ import com.squareup.picasso.Picasso
 fun ProfileScreen() {
 
     val context = LocalContext.current as Activity
+    val viewModel = remember {
+        ViewModelProvider(
+            context as ViewModelStoreOwner,
+            context.appComponent.mainViewModelFactory()
+        )[MainViewModel::class.java]
+    }
     var tokenManager = remember { SecureTokenManager(context) }
     val scrollState = rememberScrollState()
     val followers = context.intent.getIntExtra("followers", 0)
