@@ -32,6 +32,7 @@ fun MainScreen() {
             context.appComponent.mainViewModelFactory()
         )[MainViewModel::class.java]
     }
+    val user = viewModel.userDetails.observeAsState().value
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -46,7 +47,7 @@ fun MainScreen() {
         },
         topBar = {
             if (currentRoute == "details") {
-                TopAppBar(title = { Text(text = "${viewModel.userDetails.observeAsState().value?.login}") }, navigationIcon = {
+                TopAppBar(title = { Text(text = "${user?.login}") }, navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                             stringResource(R.string.back))
@@ -55,7 +56,7 @@ fun MainScreen() {
             }
         }
     ) { innerPadding ->
-        BottomNavGraph(navController = navController, modifier = Modifier.padding(innerPadding))
+        BottomNavGraph(navController = navController, modifier = Modifier.padding(innerPadding), user = user)
     }
 }
 

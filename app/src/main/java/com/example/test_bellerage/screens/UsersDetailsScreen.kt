@@ -3,6 +3,7 @@ package com.example.test_bellerage.screens
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +35,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.navigation.NavHostController
 import com.example.test_bellerage.R
 import com.example.test_bellerage.appComponent
 import com.example.test_bellerage.screens.users.DTO.UserDTORecycler
@@ -42,7 +44,7 @@ import com.example.test_bellerage.viewmodel.MainViewModel
 import com.squareup.picasso.Picasso
 
 @Composable
-fun UsersDetailsScreen() {
+fun UsersDetailsScreen(navController: NavHostController, user: UserDTORecycler?) {
     val context = LocalContext.current
     val token = remember { SecureTokenManager(context) }
     val viewModel = remember {
@@ -53,27 +55,35 @@ fun UsersDetailsScreen() {
     }
     val followers = viewModel.followers.observeAsState(emptyList())
     viewModel.userDetails.value?.let {
-        viewModel.getFollowers(
-            it.login,
-            token = token.retrieveToken()!!
-        )
+        if (user != null) {
+            viewModel.getFollowers(
+                user.login,
+                token = token.retrieveToken()!!
+            )
+        }
     }
 
-    UserList(users = followers.value)
-
+    UserList(
+        users = followers.value,
+        navController = navController,
+        modifier = Modifier.padding()
+    )
 }
 
 
 @Composable
 fun UserCard(
-    login: String,
-    avatarUrl: String,
+    user: UserDTORecycler,
     followerCount: String,
+    navController: NavHostController,
+    viewModel: MainViewModel
 ) {
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
+    val context = LocalContext.current
+    val token = remember { SecureTokenManager(context) }
     LaunchedEffect(Unit) {
         Picasso.get()
-            .load(avatarUrl)
+            .load(user.avatar_url)
             .placeholder(R.drawable.profile_image)
             .into(object : com.squareup.picasso.Target {
                 override fun onBitmapLoaded(loadedBitmap: Bitmap?, from: Picasso.LoadedFrom?) {
@@ -92,7 +102,18 @@ fun UserCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .clickable {
+                viewModel.userDetails.value?.let {
+                    viewModel.setUserValue(user)
+
+                    viewModel.getFollowers(
+                        user.login,
+                        token = token.retrieveToken()!!
+                    )
+                }
+                navController.navigate("details")
+            },
         shape = RoundedCornerShape(4.dp)
     ) {
         Row(
@@ -109,7 +130,7 @@ fun UserCard(
 
             Column {
                 Text(
-                    text = login,
+                    text = user.login,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -124,7 +145,7 @@ fun UserCard(
 
 
 @Composable
-fun UserList(users: List<UserDTORecycler>) {
+fun UserList(users: List<UserDTORecycler>, navController: NavHostController, modifier: Modifier) {
     val context = LocalContext.current
     val viewModel = remember {
         ViewModelProvider(
@@ -135,7 +156,7 @@ fun UserList(users: List<UserDTORecycler>) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
@@ -154,9 +175,10 @@ fun UserList(users: List<UserDTORecycler>) {
             }
 
             UserCard(
-                login = user.login,
-                avatarUrl = user.avatar_url,
-                followerCount = followerCount.value ?: context.getString(R.string.loading)
+                user = user,
+                followerCount = followerCount.value ?: context.getString(R.string.loading),
+                navController = navController,
+                viewModel = viewModel
             )
         }
     }

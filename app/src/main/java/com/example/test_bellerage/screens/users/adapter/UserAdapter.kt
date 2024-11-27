@@ -1,6 +1,5 @@
 package com.example.test_bellerage.screens.users.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,11 +52,6 @@ class UserAdapter(
 
                 }
             }
-
-        }
-        holder.itemView.setOnClickListener {
-            onUserClick(user)
-            navController.navigate("details")
         }
 
         Picasso.get()

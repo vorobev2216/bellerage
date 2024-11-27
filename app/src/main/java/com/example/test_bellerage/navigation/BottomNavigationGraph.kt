@@ -8,11 +8,12 @@ import androidx.navigation.compose.composable
 import com.example.test_bellerage.screens.ProfileScreen
 import com.example.test_bellerage.screens.UsersDetailsScreen
 import com.example.test_bellerage.screens.WebViewScreen
+import com.example.test_bellerage.screens.users.DTO.UserDTORecycler
 import com.example.test_bellerage.screens.users.UsersScreen
 
 
 @Composable
-fun BottomNavGraph(navController: NavHostController, modifier: Modifier) {
+fun BottomNavGraph(navController: NavHostController, modifier: Modifier, user: UserDTORecycler? = null) {
     NavHost(
         navController = navController,
         startDestination = BottomBarScreen.Home.route,
@@ -29,7 +30,7 @@ fun BottomNavGraph(navController: NavHostController, modifier: Modifier) {
             WebViewScreen()
         }
         composable(route = "details") {
-            UsersDetailsScreen()
+            UsersDetailsScreen(navController, user)
         }
 
     }
