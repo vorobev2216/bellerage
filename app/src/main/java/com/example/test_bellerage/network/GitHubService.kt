@@ -10,18 +10,27 @@ import retrofit2.http.Query
 interface GitHubService {
     @GET("/users")
     suspend fun getUsers(
+        @Header("Accept") accept: String = "application/vnd.github+json",
+        @Header("Authorization") authorization: String,
+        @Header("X-GitHub-Api-Version") apiVersion: String = "2022-11-28",
         @Query("since") since: Int,
-        @Query("per_page") perPage: Int = 30
+        @Query("per_page") perPage: Int = 100
     ): List<UserDTORecycler>
 
     @GET("users/{username}/followers")
     suspend fun getFollowers(
+        @Header("Accept") accept: String = "application/vnd.github+json",
+        @Header("Authorization") authorization: String,
+        @Header("X-GitHub-Api-Version") apiVersion: String = "2022-11-28",
         @Path("username") username: String
     ): List<UserDTORecycler>
 
-    @GET("user/{id}")
-    suspend fun getUser(
-        @Path("id") id: Int
+
+    @GET("/user")
+    suspend fun getAuthenticatedUser(
+        @Header("Accept") accept: String = "application/vnd.github+json",
+        @Header("Authorization") authorization: String,
+        @Header("X-GitHub-Api-Version") apiVersion: String = "2022-11-28"
     ): UserLogInDTO
 }
 

@@ -1,5 +1,6 @@
 package com.example.test_bellerage.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,14 +24,25 @@ class MainViewModel @Inject constructor(private val gitHubService: GitHubService
     private val _followersCount = MutableLiveData<Int>()
     val followersCount: LiveData<Int> get() = _followersCount
 
-    private val _user = MutableLiveData<UserLogInDTO>()
-    val user: LiveData<UserLogInDTO> get() = _user
+    private val _userDetails = MutableLiveData<UserDTORecycler>()
+    val userDetails: LiveData<UserDTORecycler> get() = _userDetails
 
-    fun getUsers(since: Int = 0, perPage: Int = 30) {
+    private val _loginUser = MutableLiveData<UserLogInDTO>()
+    val loginUser: LiveData<UserLogInDTO> get() = _loginUser
+
+    fun setUserValue(newUser: UserDTORecycler) {
+        _userDetails.value = newUser
+    }
+
+    fun setLoginUserValue(loginUser: UserLogInDTO) {
+        _loginUser.value = loginUser
+    }
+
+    fun getUsers(since: Int = 0, perPage: Int = 30, token: String) {
         viewModelScope.launch {
             try {
                 val result = withContext(Dispatchers.IO) {
-                    gitHubService.getUsers(since, perPage)
+                    gitHubService.getUsers(since = since, perPage = perPage, authorization ="Bearer $token"  )
                 }
                 _users.postValue(result)
             } catch (e: Exception) {
@@ -39,29 +51,58 @@ class MainViewModel @Inject constructor(private val gitHubService: GitHubService
         }
     }
 
-    fun getFollowers(username: String) {
+    fun getFollowers(username: String, token: String) {
         viewModelScope.launch {
             try {
                 val result = withContext(Dispatchers.IO) {
-                    gitHubService.getFollowers(username)
+                    gitHubService.getFollowers(username = username, authorization = "Bearer $token")
                 }
-                _followers.postValue(result)
                 _followersCount.postValue(result.size)
+                _followers.postValue(result)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    fun getUser(id: Int) {
-        viewModelScope.launch {
+    fun getUser(id: String):UserLogInDTO? {
+         viewModelScope.launch {
             try {
                 val result = withContext(Dispatchers.IO) {
-                    gitHubService.getUser(id)
+                    gitHubService.getAuthenticatedUser(authorization ="Bearer $id")
                 }
-                _user.postValue(result)
+                _loginUser.postValue(result)
+
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+        }
+        return _loginUser.value
+    }
+
+    val followerCounts = mutableMapOf<String, Int>()
+    private val _followerCountsLiveData = MutableLiveData<Pair<String, Int>>()
+    val followerCountsLiveData: LiveData<Pair<String, Int>> get() = _followerCountsLiveData
+
+    fun getFollowersMap(username: String, token: String) {
+        if (followerCounts.containsKey(username)) {
+            _followerCountsLiveData.value = username to followerCounts[username]!!
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                val followers = withContext(Dispatchers.IO) {
+                    gitHubService.getFollowers(username = username, authorization = "Bearer $token")
+                }
+                val followerCount = followers.size
+                followerCounts[username] = followerCount
+                _followerCountsLiveData.postValue(username to followerCount)
+
+
+            } catch (e: Exception) {
+                _followerCountsLiveData.postValue(username to -1)
+
             }
         }
     }

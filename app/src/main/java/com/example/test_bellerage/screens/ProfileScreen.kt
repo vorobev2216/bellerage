@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,6 +36,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.example.test_bellerage.SignInActivity
 import com.example.test_bellerage.R
 import com.example.test_bellerage.appComponent
+import com.example.test_bellerage.screens.registration.DTO.UserLogInDTO
 import com.example.test_bellerage.utils.SecureTokenManager
 import com.example.test_bellerage.viewmodel.MainViewModel
 import com.squareup.picasso.Picasso
@@ -50,17 +52,16 @@ fun ProfileScreen() {
             context.appComponent.mainViewModelFactory()
         )[MainViewModel::class.java]
     }
-    var tokenManager = remember { SecureTokenManager(context) }
+    val tokenManager = remember { SecureTokenManager(context) }
     val scrollState = rememberScrollState()
-    val followers = context.intent.getIntExtra("followers", 0)
-    val repo = context.intent.getIntExtra("repositories", 0)
-    val login = context.intent.getStringExtra("login")
-    val image = context.intent.getStringExtra("image")
     var bitmap by remember { mutableStateOf<Bitmap?>(null) }
+    val loginUser = remember { mutableStateOf<UserLogInDTO?>(null) }
+    loginUser.value = tokenManager.retrieveToken()?.let { viewModel.getUser(it) }
+    loginUser.value?.let { viewModel.setLoginUserValue(it) }
 
 
-    LaunchedEffect(image) {
-        image?.let { url ->
+    LaunchedEffect(viewModel.loginUser.value?.avatar_url) {
+        loginUser.value?.avatar_url?.let { url ->
             Picasso.get()
                 .load(url)
                 .into(object : com.squareup.picasso.Target {
@@ -96,17 +97,17 @@ fun ProfileScreen() {
         } ?: CircularProgressIndicator()
 
         Text(
-            text = "$login",
+            text = "${viewModel.loginUser.observeAsState().value?.login}",
             fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400))
         )
 
         Text(
-            text = "$followers followers",
+            text = "${loginUser.value?.followers} followers",
             fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400))
         )
 
         Text(
-            text = "$repo repositories",
+            text = "${loginUser.value?.public_repos} repositories",
             fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400))
         )
         Button(

@@ -44,7 +44,7 @@ fun MainScreen() {
         },
         topBar = {
             if (currentRoute == "details") {
-                TopAppBar(title = { Text(text = "${viewModel.user.observeAsState().value}") }, navigationIcon = {
+                TopAppBar(title = { Text(text = "${viewModel.userDetails.observeAsState().value?.login}") }, navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, "back")
                     }

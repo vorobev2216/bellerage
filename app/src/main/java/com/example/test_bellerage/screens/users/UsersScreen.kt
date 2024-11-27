@@ -2,14 +2,12 @@ package com.example.test_bellerage.screens.users
 
 
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -27,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.test_bellerage.appComponent
 import com.example.test_bellerage.screens.users.DTO.UserDTORecycler
 import com.example.test_bellerage.screens.users.adapter.UserAdapter
+import com.example.test_bellerage.utils.SecureTokenManager
 import com.example.test_bellerage.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -35,6 +34,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun UsersScreen(navController: NavHostController) {
     val context = LocalContext.current
+    val tokenManager = remember { SecureTokenManager(context) }
     val coroutineScope = rememberCoroutineScope()
     val visibleUsers = remember { mutableStateOf<List<UserDTORecycler>>(emptyList()) }
     val since = remember {
@@ -46,19 +46,19 @@ fun UsersScreen(navController: NavHostController) {
             context.appComponent.mainViewModelFactory()
         )[MainViewModel::class.java]
     }
-    val users by viewModel.users.observeAsState(emptyList())
+    val users = viewModel.users.observeAsState(emptyList())
     LaunchedEffect(since) {
         coroutineScope.launch {
-            viewModel.getUsers(since.intValue, 40)
+            viewModel.getUsers(since.intValue, 100, token = tokenManager.retrieveToken()!!)
         }
     }
 
-    visibleUsers.value = users.take(10)
+    visibleUsers.value = users.value.take(10)
 
     val onLoadMore = rememberUpdatedState {
-        if (visibleUsers.value.size < users.size) {
-            val newSize = minOf(visibleUsers.value.size + 10, users.size)
-            visibleUsers.value = users.take(newSize)
+        if (visibleUsers.value.size < users.value.size) {
+            val newSize = minOf(visibleUsers.value.size + 10, users.value.size)
+            visibleUsers.value = users.value.take(newSize)
         }
     }
 
@@ -91,10 +91,11 @@ fun UsersScreen(navController: NavHostController) {
                     adapter = UserAdapter(
                         users = visibleUsers.value.toMutableList(),
                         onUserClick = { user ->
-                            Log.d("RRR", "User clicked: ${user.login}")
+                            viewModel.setUserValue(user)
                         },
                         viewModel = viewModel,
-                        navController = navController
+                        navController = navController,
+                        tokenManager = tokenManager
                     )
                 }
             },
