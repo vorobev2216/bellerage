@@ -11,9 +11,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.compose.*
+import com.example.test_bellerage.R
 import com.example.test_bellerage.appComponent
 import com.example.test_bellerage.navigation.BottomBar
 import com.example.test_bellerage.navigation.BottomBarScreen
@@ -46,7 +48,8 @@ fun MainScreen() {
             if (currentRoute == "details") {
                 TopAppBar(title = { Text(text = "${viewModel.userDetails.observeAsState().value?.login}") }, navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, "back")
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                            stringResource(R.string.back))
                     }
                 })
             }

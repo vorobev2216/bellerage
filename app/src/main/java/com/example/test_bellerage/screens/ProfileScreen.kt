@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -89,7 +90,7 @@ fun ProfileScreen() {
         bitmap?.let {
             Image(
                 bitmap = it.asImageBitmap(),
-                contentDescription = "Profile Image",
+                contentDescription = stringResource(R.string.profile_image),
                 modifier = Modifier
                     .padding(start = 10.dp, end = 10.dp)
                     .size(200.dp)
@@ -127,7 +128,7 @@ fun ProfileScreen() {
             )
         ) {
             Text(
-                text = "Log out",
+                text = stringResource(R.string.log_out),
                 fontFamily = FontFamily(Font(R.font.fontawesome5brandsregular400)),
                 color = Color.Red
             )

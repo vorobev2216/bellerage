@@ -156,7 +156,7 @@ fun UserList(users: List<UserDTORecycler>) {
             UserCard(
                 login = user.login,
                 avatarUrl = user.avatar_url,
-                followerCount = followerCount.value ?: "Loading..."
+                followerCount = followerCount.value ?: context.getString(R.string.loading)
             )
         }
     }

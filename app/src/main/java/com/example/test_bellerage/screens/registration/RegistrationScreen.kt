@@ -42,7 +42,7 @@ fun RegistrationScreen(modifier: Modifier) {
                     val userId = tokenEditText.text.toString()
 
                     if (tokenEditText.text.isEmpty()) {
-                        Toast.makeText(context, "Упс! Введите ID пользователя", Toast.LENGTH_SHORT)
+                        Toast.makeText(context, context.getString(R.string.id), Toast.LENGTH_SHORT)
                             .show()
                     } else {
                         val intent = Intent(context, MainActivity::class.java)
